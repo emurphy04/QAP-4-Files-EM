@@ -217,7 +217,7 @@ def main():
 
         print(f'-'*78)
         print()
-        print(f'Honest Harry Car Insurance               Invoice Date:              {date:>10s}')
+        print(f'One Stop Insurance Company               Invoice Date:              {date:>10s}')
         print(f'Car Insurance and Coverage Receipt       Receipt No:                     #{invoicenum}')
         print()
         print(f'                                         Extra Liability Price:     {ex_liability_cost:>10s}')
