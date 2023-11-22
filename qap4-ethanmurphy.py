@@ -5,7 +5,13 @@
 import os
 import sys
 from datetime import datetime, timedelta
+
+# Defining the main function (Function 1)
+
 def main():
+
+    # Initializing my variables that need to have values before starting the loop
+
     claims = []
     claim_num_ind = -6
     claim_date_ind = -5
@@ -13,7 +19,10 @@ def main():
     claim_num = 1
     fname = ''
 
-    while fname != 'Stop':
+    while True:
+
+        # Resetting my variables after each loop as to not run into errors
+
         ex_liability_cost = 0
         glass_cov_cost = 0
         loan_cov_cost = 0
@@ -25,20 +34,20 @@ def main():
         process_fee = 39.99
         basicprem = 869.00
 
-
         fname = ''
-        """
+
+        # Gathering input from the user, using the fname variable to determine wether the loop will break
+
         fname = input('Please enter your first name (type stop to exit): ').capitalize()
+        if fname == 'Stop':
+            print('Successfully Stopped')
+            break
         lname = input('Please enter your last name: ').capitalize()
         addr = input('Please enter your address: ').capitalize()
         city = input('Please enter your city: ').capitalize()+','
         prov = input('Please enter your province (EX: NL, ON, ETC.): ').upper()
-        """
-        fname = "Ethan"
-        lname = 'Murphy'
-        addr = '18 Eagle Street'
-        city = 'Paradise,'
-        prov = 'NL'
+
+        # Validating provinces (Function 2)
 
         def validate_prov():
             isprovtrue = False
@@ -55,8 +64,12 @@ def main():
                 os.execl(sys.executable, sys.executable, *sys.argv)
         validate_prov()
 
+        # More inputs
+
         pstcode = input('Please enter your postal code: ').upper()
         pnum = input('Please enter your phone number: ')
+
+        # Validating phone number (Function 3)
 
         def phone_validation():
             if len(pnum) != 10:
@@ -67,6 +80,8 @@ def main():
             else:
                 pass
         phone_validation()
+
+        # More boolean based inputs used for determining the extra coverage
 
         cars = int(input('How many cars will be insured: '))
         ex_liability = input('Do you need extra liability coverage? Y/N: ').upper()
@@ -85,7 +100,11 @@ def main():
         else:
             loan_cov = False
 
+        # Defining my list
+
         paymethod = [1,2]
+
+        # Using a list to validate the customers payment method
 
         print()
         print('How would you like to pay?')
@@ -128,7 +147,7 @@ def main():
                 os.system('cls;')
                 os.execl(sys.executable, sys.executable, *sys.argv)
 
-        # Calculations
+        # Calculations for the total
 
         if cars > 1:
             cars_additional = cars-1
@@ -153,6 +172,9 @@ def main():
             loan_cov_cost = 0.00
 
         totpremium = premiums+ex_liability_cost+glass_cov_cost+loan_cov_cost
+
+        # Calculating total with downpayment and monthly payments
+
         if downpayment > totpremium:
             print('Error: Downpayment cannot equal more than the claim amount')
             os.system('pause;')
@@ -165,6 +187,8 @@ def main():
 
         invoicenum = 1029
 
+        # Formatting my values into strings for output
+
         ex_liability_cost = '${:,.2f}'.format(ex_liability_cost)
         glass_cov_cost = '${:,.2f}'.format(glass_cov_cost)
         loan_cov_cost = '${:,.2f}'.format(loan_cov_cost)
@@ -175,8 +199,12 @@ def main():
         monthlypayment = '${:,.2f}'.format(monthlypayment)
         process_fee = '${:,.2f}'.format(process_fee)
 
+        # Getting the date for today
+
         date = str(datetime.today())
         date = date[0:10]
+
+        # Getting the date for the first day of the next month
 
         date30 = datetime.today()
         date30 = date30.replace(day=1)
@@ -184,6 +212,8 @@ def main():
         date30 = date30.replace(day=1)
         date30 = str(date30)
         date30 = date30[0:10]
+
+        # Output
 
         print(f'-'*78)
         print()
@@ -202,6 +232,9 @@ def main():
         print(f'                                         -------------------------------------')
         print(f'                                         Total sale price:          {tothst:>10s}')
         print()
+
+        # Output for monthly totals
+
         if paymethod == 'monthly':
             print(f'                                         -------------------------------------')
             print(f'                                         Processing Fee:            {process_fee:>10s}')
@@ -209,7 +242,11 @@ def main():
             print(f'                                         -------------------------------------')
             print(f'                                         First payment date:        {date30:>10s}')
 
+        # getting the amount of claims in the list, since there are always 3 values being added to the list you can get the amount of claims by dividing the length of the list by 3
+
         amount_of_claims = len(claims)/3
+
+        # This code will not run if the amount of claims is 0, preventing empty variables from showing up on the first run of the code, causing errors
 
         if len(claims) != 0:
             claim_num_ind = 0
@@ -219,15 +256,25 @@ def main():
             print(f'Previous Claims:')
             print(f'Claim #  Claim Date            Amount')
             print(f'-------------------------------------')
+
+            # This prints each claim on its own line, and adds 3 to the variables we're using for the index, giving us the next set of claims
+
             while amount_of_claims != 0:
                 print(f'   {claims[claim_num_ind]:>1d}.    {claims[claim_date_ind]:>10s}        {claims[claim_tothst_ind]:>10s}')
                 amount_of_claims = amount_of_claims-1
                 claim_date_ind = claim_date_ind+3
                 claim_num_ind = claim_num_ind+3
                 claim_tothst_ind = claim_tothst_ind+3
+        
+        # Appending this rounds values to the claims list for use on the next iteration of the loop, adding 1 to the claim number, and adding one to the invoice number
+
         claims.append(claim_num)
         claims.append(date)
         claims.append(tothst)
         amount_of_claims = len(claims)/3
         claim_num = claim_num+1
+        invoicenum = invoicenum+1
+
+# Running the function that will loop our code
+
 main()
